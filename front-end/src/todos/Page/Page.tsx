@@ -1,24 +1,15 @@
 import { Button, TextField, Typography } from "@mui/material";
 import { Box, Container } from "@mui/system";
-import React, { useEffect } from "react"
+import { usePage } from "./usePage";
 
 const Page: React.FC = () => {
-    const [newTodoTitle, setNewTodoTitle] = React.useState<string>("");
-    const newTodoInputRef = React.useRef<HTMLButtonElement>(null);
-    useEffect(() => newTodoInputRef.current?.focus(), []);
-
-    const handleNewTodoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNewTodoTitle(e.target.value);
-    };
-
-    const handleAddTodo = () => {
-        console.log(`Adding todo: ${newTodoTitle}`);
-        setNewTodoTitle("");
-    };
-
-    const handleNewTodoKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === "Enter") handleAddTodo();
-    };
+    const {
+        newTodoTitle,
+        handleNewTodoChange,
+        handleAddTodo,
+        handleNewTodoKeyDown,
+        newTodoInputRef
+    } = usePage();
 
     return (
         <Container>
