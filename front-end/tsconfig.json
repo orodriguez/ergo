@@ -18,7 +18,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": ".", // Set base directory to src
+    "paths": {
+      "@ergo/*": [
+        "src/*"
+      ]
+    }
   },
   "include": [
     "src"
