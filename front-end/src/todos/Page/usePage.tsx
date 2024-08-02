@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import api from 'src/api';
+import apiClient from "src/apiClient";
 
 export function usePage() {
     const [newTodoTitle, setNewTodoTitle] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const newTodoInputRef = useRef<HTMLInputElement>(null);
+    const api = apiClient(() => setIsLoading(true), () => setIsLoading(false));
 
     useEffect(() => {
         newTodoInputRef.current?.focus();
@@ -16,7 +17,6 @@ export function usePage() {
 
     const handleAddTodo = () => {
         setIsLoading(true);
-        // wait for 1 second
         setTimeout(() => {
             api.todos.add({
                 id: 0,
