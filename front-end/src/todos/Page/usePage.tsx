@@ -25,10 +25,12 @@ export function usePage() {
     };
 
     return {
-        newTodoTitle,
-        handleNewTodoChange,
-        handleAddTodo,
-        handleNewTodoKeyDown,
-        newTodoInputRef
+        newTodo: {
+            title: newTodoTitle,
+            ref: newTodoInputRef,
+            handleChange: handleNewTodoChange,
+            handleKeyDown: handleNewTodoKeyDown
+        },
+        handleAddTodo
     };
 }

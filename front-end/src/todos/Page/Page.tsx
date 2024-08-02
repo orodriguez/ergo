@@ -4,11 +4,8 @@ import { usePage } from "./usePage";
 
 const Page: React.FC = () => {
     const {
-        newTodoTitle,
-        handleNewTodoChange,
-        handleAddTodo,
-        handleNewTodoKeyDown,
-        newTodoInputRef
+        newTodo,
+        handleAddTodo
     } = usePage();
 
     return (
@@ -18,10 +15,10 @@ const Page: React.FC = () => {
                 <TextField
                     label="New Todo"
                     variant="standard"
-                    value={newTodoTitle}
-                    onChange={handleNewTodoChange}
-                    onKeyDown={handleNewTodoKeyDown}
-                    inputRef={newTodoInputRef}
+                    value={newTodo.title}
+                    onChange={newTodo.handleChange}
+                    onKeyDown={newTodo.handleKeyDown}
+                    inputRef={newTodo.ref}
                     sx={{ width: '40%' }}
                 />
                 <Button variant="contained" onClick={handleAddTodo}>Add Todo</Button>
