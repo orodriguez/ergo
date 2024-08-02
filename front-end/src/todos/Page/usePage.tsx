@@ -5,7 +5,7 @@ export function usePage() {
     const [newTodoTitle, setNewTodoTitle] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const newTodoInputRef = useRef<HTMLInputElement>(null);
-    const api = apiClient(() => setIsLoading(true), () => setIsLoading(false));
+    const api = apiClient(setIsLoading);
 
     useEffect(() => {
         newTodoInputRef.current?.focus();

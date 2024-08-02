@@ -4,18 +4,17 @@ import todoApiClient from './todos/apiClient';
 const API_URL = 'http://localhost:3000';
 
 const createApiClient = (
-    onLoadingStarted: () => void = () => { },
-    onLoadingEnded: () => void = () => { }
+    onLoadingStatusChanged: (status: boolean) => void = (status) => { }
 ) => {
     const customAxios = axios.create({
         baseURL: API_URL
     });
 
     customAxios.interceptors.request.use((config) => {
-        onLoadingStarted();
+        onLoadingStatusChanged(true);
         return config;
     }, (error) => {
-        onLoadingEnded();
+        onLoadingStatusChanged(false);
         return Promise.reject(error);
     });
 
