@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
+import api from '@ergo/api';
 
 export function usePage() {
     const [newTodoTitle, setNewTodoTitle] = useState<string>("");
@@ -14,8 +15,15 @@ export function usePage() {
     };
 
     const handleAddTodo = () => {
-        console.log(`Adding todo: ${newTodoTitle}`);
-        setNewTodoTitle("");
+        api.todos.add({
+            id: 0,
+            title: newTodoTitle,
+            description: "",
+            completed: false
+        }).then(() => {
+            setNewTodoTitle("");
+            newTodoInputRef.current?.focus();
+        });
     };
 
     const handleNewTodoKeyDown = (e: React.KeyboardEvent) => {

@@ -10,8 +10,8 @@ const fetch = async (): Promise<Todo[]> => {
     return response.data;
 };
 
-const add = async (text: string): Promise<Todo> => {
-    const response = await axios.post(`${API_URL}/todos`, { text });
+const add = async (todo: Todo): Promise<Todo> => {
+    const response = await axios.post(`${API_URL}/todos`, todo);
     return response.data;
 };
 
