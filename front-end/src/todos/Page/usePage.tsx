@@ -1,9 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import apiClient from "src/apiClient";
+import { Todo } from "../todo";
 
 export function usePage() {
     const [newTodoTitle, setNewTodoTitle] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [items, setItems] = useState<Todo[]>([
+        { title: "Dummy", description: "Dummy", completed: false, id: 0 }
+    ]);
     const newTodoInputRef = useRef<HTMLInputElement>(null);
     const api = apiClient(setIsLoading);
 
@@ -45,6 +49,7 @@ export function usePage() {
             handleKeyDown: handleNewTodoKeyDown
         },
         handleAddTodo,
-        isLoading
+        isLoading,
+        items
     };
 }
