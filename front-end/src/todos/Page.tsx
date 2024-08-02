@@ -7,6 +7,10 @@ const Page: React.FC = () => {
     const newTodoInputRef = React.useRef<HTMLButtonElement>(null);
     useEffect(() => newTodoInputRef.current?.focus(), []);
 
+    const handleNewTodoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setNewTodoTitle(e.target.value);
+    };
+
     const handleAddTodo = () => {
         console.log(`Adding todo: ${newTodoTitle}`);
         setNewTodoTitle("");
@@ -24,7 +28,7 @@ const Page: React.FC = () => {
                     label="New Todo"
                     variant="standard"
                     value={newTodoTitle}
-                    onChange={e => setNewTodoTitle(e.target.value)}
+                    onChange={handleNewTodoChange}
                     onKeyDown={handleNewTodoKeyDown}
                     inputRef={newTodoInputRef}
                     sx={{ width: '40%' }}
