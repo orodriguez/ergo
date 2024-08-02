@@ -12,7 +12,7 @@ const Page: React.FC = () => {
         setNewTodoTitle("");
     };
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
+    const handleNewTodoKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === "Enter") handleAddTodo();
     };
 
@@ -25,7 +25,7 @@ const Page: React.FC = () => {
                     variant="standard"
                     value={newTodoTitle}
                     onChange={e => setNewTodoTitle(e.target.value)}
-                    onKeyDown={handleKeyDown}
+                    onKeyDown={handleNewTodoKeyDown}
                     inputRef={newTodoInputRef}
                     sx={{ width: '40%' }}
                 />
