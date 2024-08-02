@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-
-import api from '@ergo/api';
+import api from 'src/api';
 
 export function usePage() {
     const [newTodoTitle, setNewTodoTitle] = useState<string>("");
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const newTodoInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -15,15 +15,20 @@ export function usePage() {
     };
 
     const handleAddTodo = () => {
-        api.todos.add({
-            id: 0,
-            title: newTodoTitle,
-            description: "",
-            completed: false
-        }).then(() => {
-            setNewTodoTitle("");
-            newTodoInputRef.current?.focus();
-        });
+        setIsLoading(true);
+        // wait for 1 second
+        setTimeout(() => {
+            api.todos.add({
+                id: 0,
+                title: newTodoTitle,
+                description: "",
+                completed: false
+            }).then(() => {
+                setNewTodoTitle("");
+                newTodoInputRef.current?.focus();
+                setIsLoading(false);
+            });
+        }, 500);
     };
 
     const handleNewTodoKeyDown = (e: React.KeyboardEvent) => {
@@ -39,6 +44,7 @@ export function usePage() {
             handleChange: handleNewTodoChange,
             handleKeyDown: handleNewTodoKeyDown
         },
-        handleAddTodo
+        handleAddTodo,
+        isLoading
     };
 }
