@@ -6,7 +6,8 @@ export function usePage() {
     const [newTodoTitle, setNewTodoTitle] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [items, setItems] = useState<Todo[]>([
-        { title: "Dummy", description: "Dummy", completed: false, id: 0 }
+        { title: "This is something super crazy long, I want to see how it behaves This is something super crazy long, I want to see how it behaves", description: "Dummy", completed: false, id: 0 },
+        { title: "short", description: "Dummy", completed: false, id: 0 }
     ]);
     const newTodoInputRef = useRef<HTMLInputElement>(null);
     const api = apiClient(setIsLoading);

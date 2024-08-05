@@ -40,7 +40,12 @@ const Page: React.FC = () => {
                                 disableRipple
                                 onChange={() => { }}
                             />
-                            <ListItemText primary={item.title} />
+                            <ListItemText primary={item.title} sx={{
+                                width: '400px',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                            }} />
                             <IconButton edge="end" aria-label="delete" onClick={() => { }}>
                                 <DeleteIcon />
                             </IconButton>
