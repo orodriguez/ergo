@@ -9,6 +9,7 @@ const Page: React.FC = () => {
         handleAddTodo,
         activeRequests,
         items,
+        handleCompletedChange
     } = usePage();
 
     return (
@@ -38,7 +39,7 @@ const Page: React.FC = () => {
                                 checked={item.completed}
                                 tabIndex={-1}
                                 disableRipple
-                                onChange={() => { }}
+                                onChange={e => handleCompletedChange(e, item.id)}
                             />
                             <ListItemText primary={item.title} sx={{
                                 width: '400px',

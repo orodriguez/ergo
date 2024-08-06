@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { CreateRequest, Response } from './types';
+import { CreateRequest, UpdateRequest, Response } from './types';
 
 const apiClient = (axios: AxiosInstance) =>
 ({
@@ -7,15 +7,15 @@ const apiClient = (axios: AxiosInstance) =>
         const response = await axios.get(`/todos`);
         return response.data;
     },
-    add: async (todo: CreateRequest): Promise<Response> => {
-        const response = await axios.post(`/todos`, todo);
+    add: async (request: CreateRequest): Promise<Response> => {
+        const response = await axios.post(`/todos`, request);
         return response.data;
     },
     remove: async (id: number): Promise<void> => {
         await axios.delete(`/todos/${id}`);
     },
-    complete: async (id: number): Promise<Response> => {
-        const response = await axios.put(`/todos/${id}`, { completed: true });
+    update: async (id: number, request: UpdateRequest): Promise<Response> => {
+        const response = await axios.put(`/todos/${id}`, request);
         return response.data;
     },
 });
