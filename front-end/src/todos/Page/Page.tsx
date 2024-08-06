@@ -42,12 +42,15 @@ const Page: React.FC = () => {
                                 disableRipple
                                 onChange={e => handleCompletedChange(item.id, e.target.checked)}
                             />
-                            <ListItemText primary={item.title} sx={{
-                                width: '400px',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
-                            }} />
+                            <ListItemText
+                                primary={item.title}
+                                onClick={e => handleCompletedChange(item.id, !item.completed)}
+                                sx={{
+                                    width: '400px',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap',
+                                }} />
                             <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteTodo(item.id)}>
                                 <DeleteIcon />
                             </IconButton>
