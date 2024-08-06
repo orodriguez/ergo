@@ -12,7 +12,7 @@ export interface UsePage {
     handleAddTodo: () => void;
     items: Response[];
     activeRequests: number;
-    handleCompletedChange: (e: React.ChangeEvent<HTMLInputElement>, id: number) => void;
+    handleCompletedChange: (id: number, completed: boolean) => void;
     handleDeleteTodo: (id: number) => void;
 }
 
@@ -49,17 +49,14 @@ export function usePage(): UsePage {
         }
     };
 
-    const handleCompletedChange = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
-        const completed = e.target.checked;
+    const updateCompleted = (id: number, completed: boolean) =>
+        setItems(items => items.map((item) =>
+            item.id === id ? { ...item, completed } : item));
 
-        api.todos.update(id, { completed })
-            .then(() => {
-                setItems((prev) => prev.map((item) => {
-                    if (item.id === id) return { ...item, completed };
-                    return item;
-                }));
-            });
-    };
+    const handleCompletedChange = (id: number, completed: boolean) =>
+        api.todos
+            .update(id, { completed })
+            .then(() => updateCompleted(id, completed));
 
     const handleDeleteTodo = (id: number) =>
         api.todos

@@ -40,7 +40,7 @@ const Page: React.FC = () => {
                                 checked={item.completed}
                                 tabIndex={-1}
                                 disableRipple
-                                onChange={e => handleCompletedChange(e, item.id)}
+                                onChange={e => handleCompletedChange(item.id, e.target.checked)}
                             />
                             <ListItemText primary={item.title} sx={{
                                 width: '400px',
