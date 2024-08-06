@@ -4,29 +4,30 @@ import todoApiClient from './todos/apiClient';
 const API_URL = 'http://localhost:3000';
 
 const createApiClient = (
-    onLoadingStatusChanged: (status: boolean) => void = (status) => { }
+    setActiveRequests: (activeRequests: (prev: number) => number) => void
 ) => {
     const customAxios = axios.create({
         baseURL: API_URL
     });
 
+
+
     customAxios.interceptors.request.use((config) => {
-        onLoadingStatusChanged(true);
+        setActiveRequests(prev => prev + 1);
         return config;
     }, (error) => {
-        onLoadingStatusChanged(false);
+        setActiveRequests(prev => prev - 1);
         return Promise.reject(error);
     });
 
     // Response interceptor
     customAxios.interceptors.response.use(
         (response) => {
-            onLoadingStatusChanged(false);
+            setActiveRequests(prev => prev - 1);
             return response;
         },
         (error) => {
-            // Handle response error
-            onLoadingStatusChanged(false);
+            setActiveRequests(prev => prev - 1);
             return Promise.reject(error);
         }
     );

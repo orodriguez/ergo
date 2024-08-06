@@ -4,10 +4,10 @@ import { Response } from "../types";
 
 export function usePage() {
     const [newTodoTitle, setNewTodoTitle] = useState<string>("");
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [activeRequests, setActiveRequests] = useState<number>(0);
     const [items, setItems] = useState<Response[]>([]);
     const newTodoInputRef = useRef<HTMLInputElement>(null);
-    const api = apiClient(setIsLoading);
+    const api = apiClient(setActiveRequests);
 
     useEffect(() => {
         newTodoInputRef.current?.focus();
@@ -20,13 +20,11 @@ export function usePage() {
     };
 
     const handleAddTodo = () => {
-        setIsLoading(true);
         setTimeout(() => {
             api.todos.add({ title: newTodoTitle })
                 .then(() => {
                     setNewTodoTitle("");
                     newTodoInputRef.current?.focus();
-                    setIsLoading(false);
                 });
         }, 500);
     };
@@ -45,7 +43,7 @@ export function usePage() {
             handleKeyDown: handleNewTodoKeyDown
         },
         handleAddTodo,
-        isLoading,
-        items
+        items,
+        activeRequests
     };
 }

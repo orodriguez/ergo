@@ -7,7 +7,7 @@ const Page: React.FC = () => {
     const {
         newTodo,
         handleAddTodo,
-        isLoading,
+        activeRequests,
         items,
     } = usePage();
 
@@ -15,7 +15,7 @@ const Page: React.FC = () => {
         <Container>
             <Box display="flex" alignItems="center" gap={2}>
                 <Typography variant="h2">Todos</Typography>
-                {isLoading && <CircularProgress />}
+                {activeRequests > 0 && <CircularProgress />}
             </Box>
             <Box display="flex" alignItems="center" gap={2}>
                 <TextField
