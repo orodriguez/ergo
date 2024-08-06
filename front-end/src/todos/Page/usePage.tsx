@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import apiClient from "src/apiClient";
-import { Todo } from "../todo";
+import { Response } from "../types";
 
 export function usePage() {
     const [newTodoTitle, setNewTodoTitle] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [items, setItems] = useState<Todo[]>([
+    const [items, setItems] = useState<Response[]>([
         { title: "This is something super crazy long, I want to see how it behaves This is something super crazy long, I want to see how it behaves", description: "Dummy", completed: false, id: 0 },
         { title: "short", description: "Dummy", completed: false, id: 0 }
     ]);
@@ -23,16 +23,12 @@ export function usePage() {
     const handleAddTodo = () => {
         setIsLoading(true);
         setTimeout(() => {
-            api.todos.add({
-                id: 0,
-                title: newTodoTitle,
-                description: "",
-                completed: false
-            }).then(() => {
-                setNewTodoTitle("");
-                newTodoInputRef.current?.focus();
-                setIsLoading(false);
-            });
+            api.todos.add({ title: newTodoTitle })
+                .then(() => {
+                    setNewTodoTitle("");
+                    newTodoInputRef.current?.focus();
+                    setIsLoading(false);
+                });
         }, 500);
     };
 

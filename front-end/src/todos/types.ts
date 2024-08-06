@@ -1,4 +1,8 @@
-export interface Todo {
+export interface CreateRequest {
+    title: string;
+}
+
+export interface Response {
     id: number;
     title: string;
     description: string;
