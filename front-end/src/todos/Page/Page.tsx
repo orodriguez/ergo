@@ -16,7 +16,6 @@ const Page: React.FC = () => {
         hideDeleteConfirmation,
     } = usePage();
 
-    console.log('Rendering Page');
     return (
         <Container>
             <Box display="flex" alignItems="center" gap={2}>
