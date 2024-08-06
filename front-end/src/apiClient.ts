@@ -18,6 +18,19 @@ const createApiClient = (
         return Promise.reject(error);
     });
 
+    // Response interceptor
+    customAxios.interceptors.response.use(
+        (response) => {
+            onLoadingStatusChanged(false);
+            return response;
+        },
+        (error) => {
+            // Handle response error
+            onLoadingStatusChanged(false);
+            return Promise.reject(error);
+        }
+    );
+
     return {
         todos: todoApiClient(customAxios)
     };
