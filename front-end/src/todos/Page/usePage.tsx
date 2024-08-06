@@ -5,15 +5,14 @@ import { Response } from "../types";
 export function usePage() {
     const [newTodoTitle, setNewTodoTitle] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [items, setItems] = useState<Response[]>([
-        { title: "This is something super crazy long, I want to see how it behaves This is something super crazy long, I want to see how it behaves", description: "Dummy", completed: false, id: 0 },
-        { title: "short", description: "Dummy", completed: false, id: 0 }
-    ]);
+    const [items, setItems] = useState<Response[]>([]);
     const newTodoInputRef = useRef<HTMLInputElement>(null);
     const api = apiClient(setIsLoading);
 
     useEffect(() => {
         newTodoInputRef.current?.focus();
+        api.todos.fetch()
+            .then(setItems);
     }, []);
 
     const handleNewTodoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
