@@ -2,7 +2,19 @@ import { useState, useEffect, useRef } from "react";
 import apiClient from "src/apiClient";
 import { Response } from "../types";
 
-export function usePage() {
+export interface UsePage {
+    newTodo: {
+        title: string;
+        ref: React.RefObject<HTMLInputElement>;
+        handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+        handleKeyDown: (e: React.KeyboardEvent) => void;
+    };
+    handleAddTodo: () => void;
+    items: Response[];
+    activeRequests: number;
+}
+
+export function usePage(): UsePage {
     const [newTodoTitle, setNewTodoTitle] = useState<string>("");
     const [activeRequests, setActiveRequests] = useState<number>(0);
     const [items, setItems] = useState<Response[]>([]);
