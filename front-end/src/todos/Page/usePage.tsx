@@ -14,6 +14,9 @@ export interface UsePage {
     activeRequests: number;
     handleCompletedChange: (id: number, completed: boolean) => void;
     handleDeleteTodo: (id: number) => void;
+    deleteConfirmationTarget: number | null;
+    showDeleteConfirmation: (id: number) => void;
+    hideDeleteConfirmation: () => void;
 }
 
 export function usePage(): UsePage {
@@ -21,6 +24,7 @@ export function usePage(): UsePage {
     const [activeRequests, setActiveRequests] = useState<number>(0);
     const [items, setItems] = useState<Response[]>([]);
     const newTodoInputRef = useRef<HTMLInputElement>(null);
+    const [deleteConfirmationTarget, setDeleteConfirmationTarget] = useState<number | null>(null)
     const api = apiClient(setActiveRequests);
 
     useEffect(() => {
@@ -54,11 +58,20 @@ export function usePage(): UsePage {
             .update(id, { completed })
             .then(() => updateCompleted(id, completed));
 
-    const handleDeleteTodo = (id: number) =>
+    const handleDeleteTodo = (id: number) => {
         api.todos
             .remove(id)
-            .then(() => setItems(prev => prev.filter((item) => item.id !== id)));
+            .then(() => {
+                setItems(prev => prev.filter((item) => item.id !== id));
+                hideDeleteConfirmation();
+            });
+    }
 
+    const showDeleteConfirmation = (id: number) => setDeleteConfirmationTarget(id);
+
+    const hideDeleteConfirmation = () => {
+        setDeleteConfirmationTarget(null);
+    };
 
     return {
         newTodo: {
@@ -71,6 +84,9 @@ export function usePage(): UsePage {
         items,
         activeRequests,
         handleCompletedChange,
-        handleDeleteTodo
+        handleDeleteTodo,
+        deleteConfirmationTarget,
+        showDeleteConfirmation,
+        hideDeleteConfirmation
     };
 }

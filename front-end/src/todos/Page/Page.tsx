@@ -1,4 +1,4 @@
-import { Button, Checkbox, CircularProgress, IconButton, List, ListItem, ListItemText, TextField, Typography } from "@mui/material";
+import { Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogTitle, IconButton, List, ListItem, ListItemText, TextField, Typography } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import { usePage } from "./usePage";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -10,9 +10,13 @@ const Page: React.FC = () => {
         activeRequests,
         items,
         handleCompletedChange,
-        handleDeleteTodo
+        handleDeleteTodo,
+        deleteConfirmationTarget,
+        showDeleteConfirmation,
+        hideDeleteConfirmation,
     } = usePage();
 
+    console.log('Rendering Page');
     return (
         <Container>
             <Box display="flex" alignItems="center" gap={2}>
@@ -51,9 +55,16 @@ const Page: React.FC = () => {
                                     textOverflow: 'ellipsis',
                                     whiteSpace: 'nowrap',
                                 }} />
-                            <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteTodo(item.id)}>
+                            <IconButton edge="end" aria-label="delete" onClick={() => showDeleteConfirmation(item.id)}>
                                 <DeleteIcon />
                             </IconButton>
+                            <Dialog id={`deleteConfirmationDialog${item.id}`} open={deleteConfirmationTarget === item.id} onClose={hideDeleteConfirmation}>
+                                <DialogTitle>Are you sure you want to delete {item.title}?</DialogTitle>
+                                <DialogActions>
+                                    <Button onClick={() => handleDeleteTodo(item.id)}>Yes</Button>
+                                    <Button onClick={hideDeleteConfirmation}>No</Button>
+                                </DialogActions>
+                            </Dialog>
                         </Box>
                     </ListItem>
                 ))}
