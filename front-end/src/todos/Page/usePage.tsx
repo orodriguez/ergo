@@ -33,20 +33,16 @@ export function usePage(): UsePage {
         setNewTodoTitle(e.target.value);
     };
 
-    const handleAddTodo = () => {
-        setTimeout(() => {
-            api.todos.add({ title: newTodoTitle })
-                .then(() => {
-                    setNewTodoTitle("");
-                    newTodoInputRef.current?.focus();
-                });
-        }, 500);
-    };
+    const handleAddTodo = () =>
+        api.todos.add({ title: newTodoTitle })
+            .then(newItem => {
+                setItems(items => [newItem, ...items]);
+                setNewTodoTitle("");
+                newTodoInputRef.current?.focus();
+            });
 
     const handleNewTodoKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === "Enter") {
-            handleAddTodo();
-        }
+        if (e.key === "Enter") handleAddTodo();
     };
 
     const updateCompleted = (id: number, completed: boolean) =>
