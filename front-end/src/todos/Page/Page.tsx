@@ -9,7 +9,8 @@ const Page: React.FC = () => {
         handleAddTodo,
         activeRequests,
         items,
-        handleCompletedChange
+        handleCompletedChange,
+        handleDeleteTodo
     } = usePage();
 
     return (
@@ -47,7 +48,7 @@ const Page: React.FC = () => {
                                 textOverflow: 'ellipsis',
                                 whiteSpace: 'nowrap',
                             }} />
-                            <IconButton edge="end" aria-label="delete" onClick={() => { }}>
+                            <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteTodo(item.id)}>
                                 <DeleteIcon />
                             </IconButton>
                         </Box>

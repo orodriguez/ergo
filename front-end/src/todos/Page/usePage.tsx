@@ -13,6 +13,7 @@ export interface UsePage {
     items: Response[];
     activeRequests: number;
     handleCompletedChange: (e: React.ChangeEvent<HTMLInputElement>, id: number) => void;
+    handleDeleteTodo: (id: number) => void;
 }
 
 export function usePage(): UsePage {
@@ -60,6 +61,12 @@ export function usePage(): UsePage {
             });
     };
 
+    const handleDeleteTodo = (id: number) =>
+        api.todos
+            .remove(id)
+            .then(() => setItems(prev => prev.filter((item) => item.id !== id)));
+
+
     return {
         newTodo: {
             title: newTodoTitle,
@@ -70,6 +77,7 @@ export function usePage(): UsePage {
         handleAddTodo,
         items,
         activeRequests,
-        handleCompletedChange
+        handleCompletedChange,
+        handleDeleteTodo
     };
 }
