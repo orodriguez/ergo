@@ -1,20 +1,57 @@
+import { useState, useEffect, useRef } from "react";
 import { Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogTitle, IconButton, List, ListItem, ListItemText, TextField, Typography } from "@mui/material";
 import { Box, Container } from "@mui/system";
-import { usePage } from "./usePage";
 import DeleteIcon from '@mui/icons-material/Delete';
+import apiClient from "src/apiClient";
+import { Response } from "../types";
 
 const Page: React.FC = () => {
-    const {
-        newTodo,
-        handleAddTodo,
-        activeRequests,
-        items,
-        handleCompletedChange,
-        handleDeleteTodo,
-        deleteConfirmationTarget,
-        showDeleteConfirmation,
-        hideDeleteConfirmation,
-    } = usePage();
+    const [newTodoTitle, setNewTodoTitle] = useState<string>("");
+    const [activeRequests, setActiveRequests] = useState<number>(0);
+    const [items, setItems] = useState<Response[]>([]);
+    const newTodoInputRef = useRef<HTMLInputElement>(null);
+    const [deleteConfirmationTarget, setDeleteConfirmationTarget] = useState<number | null>(null);
+    const api = apiClient(setActiveRequests);
+
+    useEffect(() => {
+        newTodoInputRef.current?.focus();
+        api.todos.fetch().then(setItems);
+    }, []);
+
+    const handleNewTodoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setNewTodoTitle(e.target.value);
+    };
+
+    const handleAddTodo = () =>
+        api.todos.add({ title: newTodoTitle }).then(newItem => {
+            setItems(items => [newItem, ...items]);
+            setNewTodoTitle("");
+            newTodoInputRef.current?.focus();
+        });
+
+    const handleNewTodoKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === "Enter") handleAddTodo();
+    };
+
+    const updateCompleted = (id: number, completed: boolean) =>
+        setItems(items => items.map(item =>
+            item.id === id ? { ...item, completed } : item));
+
+    const handleCompletedChange = (id: number, completed: boolean) =>
+        api.todos.update(id, { completed }).then(() => updateCompleted(id, completed));
+
+    const handleDeleteTodo = (id: number) => {
+        api.todos.remove(id).then(() => {
+            setItems(prev => prev.filter(item => item.id !== id));
+            hideDeleteConfirmation();
+        });
+    };
+
+    const showDeleteConfirmation = (id: number) => setDeleteConfirmationTarget(id);
+
+    const hideDeleteConfirmation = () => {
+        setDeleteConfirmationTarget(null);
+    };
 
     return (
         <Container>
@@ -26,10 +63,10 @@ const Page: React.FC = () => {
                 <TextField
                     label="New Todo"
                     variant="standard"
-                    value={newTodo.title}
-                    onChange={newTodo.handleChange}
-                    onKeyDown={newTodo.handleKeyDown}
-                    inputRef={newTodo.ref}
+                    value={newTodoTitle}
+                    onChange={handleNewTodoChange}
+                    onKeyDown={handleNewTodoKeyDown}
+                    inputRef={newTodoInputRef}
                     sx={{ width: '40%' }}
                 />
                 <Button variant="contained" onClick={handleAddTodo}>Add Todo</Button>
@@ -68,9 +105,8 @@ const Page: React.FC = () => {
                     </ListItem>
                 ))}
             </List>
-
         </Container>
-    )
+    );
 };
 
 export default Page;
