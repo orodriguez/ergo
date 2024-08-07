@@ -1,7 +1,14 @@
 import { AxiosInstance } from 'axios';
 import { CreateRequest, UpdateRequest, Response } from './types';
 
-const apiClient = (axios: AxiosInstance) =>
+export interface ApiClient {
+    fetch: () => Promise<Response[]>;
+    add: (request: CreateRequest) => Promise<Response>;
+    remove: (id: number) => Promise<void>;
+    update: (id: number, request: UpdateRequest) => Promise<Response>;
+}
+
+export const apiClient = (axios: AxiosInstance) =>
 ({
     fetch: async (): Promise<Response[]> => {
         const response = await axios.get(`/todos`);

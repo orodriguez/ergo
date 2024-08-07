@@ -1,9 +1,13 @@
 import axios from 'axios';
-import todoApiClient from './todos/apiClient';
+import { apiClient as todoApiClient, ApiClient as TodoApiClient } from './todos/apiClient';
 
 const API_URL = 'http://localhost:3000';
 
-const createApiClient = (
+export interface ApiClient {
+    todos: TodoApiClient;
+}
+
+export const createApiClient = (
     setActiveRequests: (activeRequests: (prev: number) => number) => void
 ) => {
     const customAxios = axios.create({
