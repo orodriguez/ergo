@@ -16,7 +16,10 @@ const Page: React.FC = () => {
 
     useEffect(() => {
         newTodoInputRef.current?.focus();
-        api.todos.fetch().then(setItems);
+        api.todos.fetch().then(todos => {
+            console.log('Todos fetched', todos);
+            setItems(todos);
+        });
     }, []);
 
     const handleNewTodoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
