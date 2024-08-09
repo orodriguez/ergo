@@ -44,17 +44,6 @@ describe('Page Component', () => {
             return HttpResponse.json(todo);
         }));
 
-        server.use(http.post('http://localhost:3000/todos', ({ }) => {
-            const todo: Response = {
-                id: 4,
-                title: 'New todo',
-                description: 'New todo description',
-                completed: false
-            };
-            console.log(todo);
-            return HttpResponse.json(todo);
-        }));
-
         render(<Page />);
 
         // fill the input
