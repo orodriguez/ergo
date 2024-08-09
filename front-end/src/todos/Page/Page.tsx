@@ -17,7 +17,6 @@ const Page: React.FC = () => {
     useEffect(() => {
         newTodoInputRef.current?.focus();
         api.todos.fetch().then(todos => {
-            console.log('Todos fetched', todos);
             setItems(todos);
         });
     }, []);

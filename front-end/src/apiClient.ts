@@ -17,7 +17,6 @@ export const createApiClient = (
 
 
     customAxios.interceptors.request.use((config) => {
-        console.log('Request made');
         setActiveRequests(prev => prev + 1);
         return config;
     }, (error) => {

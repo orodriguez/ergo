@@ -7,7 +7,6 @@
  * Consider migrating to a more modern test runner if
  * you don't want to deal with this.
  */
-console.log('Running jest.polyfills.js');
 const { TextDecoder, TextEncoder } = require('node:util');
 const { ReadableStream, TransformStream } = require('node:stream/web');
 

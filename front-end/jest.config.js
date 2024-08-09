@@ -1,4 +1,3 @@
-console.log('Running jest.config.js');
 // jest.config.js
 module.exports = {
   transform: {
