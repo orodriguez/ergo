@@ -1,4 +1,4 @@
-import React from "react";
+import React, { act } from "react";
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import Page from "./Page";
 import { server } from 'src/mocks/node'
@@ -25,6 +25,7 @@ describe('Page Component', () => {
             description: 'New todo description',
             completed: false
         });
+
         render(<Page />);
         await fillNewTodoInput('New todo');
 
