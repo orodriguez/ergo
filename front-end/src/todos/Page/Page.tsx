@@ -35,7 +35,7 @@ const Page: React.FC = () => {
 
     const handleCompletedChange = (id: number, completed: boolean) =>
         api.todos.update(id, { completed }).then(() => {
-            dispatch(todoActions.update(id, completed));
+            dispatch(todoActions.toggleComplete(id, completed));
         });
 
     const handleDeleteTodo = (id: number) => {
