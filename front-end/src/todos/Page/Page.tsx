@@ -17,7 +17,7 @@ const Page: React.FC = () => {
         api.todos.fetch().then(todos => {
             dispatch(todoActions.fetchAll(todos));
         });
-    }, [api]);
+    }, []);
 
     const handleNewTodoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(todoActions.changeTitle(e.target.value));
