@@ -4,7 +4,7 @@ import { Box, Container } from "@mui/system";
 import DeleteIcon from '@mui/icons-material/Delete';
 import apiClient from "src/apiClient";
 import { initialState } from 'src/store/state';
-import * as actions from '../actions';
+import * as todoActions from '../actions';
 import { reducer } from 'src/store/reducer';
 
 const Page: React.FC = () => {
@@ -15,33 +15,34 @@ const Page: React.FC = () => {
     useEffect(() => {
         newTodoInputRef.current?.focus();
         api.todos.fetch().then(todos => {
-            dispatch(actions.setItems(todos));
+            dispatch(todoActions.fetchAll(todos));
         });
     }, [api]);
 
     const handleNewTodoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        dispatch(actions.setNewTodoTitle(e.target.value));
+        dispatch(todoActions.changeTitle(e.target.value));
     };
 
-    const handleAddTodo = () =>
+    const handleAdd = () =>
         api.todos.add({ title: state.newTodoTitle }).then(newItem => {
-            dispatch(actions.addItem(newItem));
+            dispatch(todoActions.add(newItem));
             newTodoInputRef.current?.focus();
         });
 
     const handleNewTodoKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === "Enter") handleAddTodo();
+        if (e.key === "Enter") handleAdd();
     };
 
     const handleCompletedChange = (id: number, completed: boolean) =>
         api.todos.update(id, { completed }).then(() => {
-            dispatch(actions.updateItem(id, completed));
+            dispatch(todoActions.update(id, completed));
         });
 
     const handleDeleteTodo = (id: number) => {
         api.todos.remove(id).then(() => {
-            dispatch(actions.removeItem(id));
-            dispatch(actions.hideDeleteConfirmation());
+            dispatch(todoActions.remove(id));
+            // include this state change in the previous action
+            dispatch(todoActions.hideDeleteConfirmation());
         });
     };
 
@@ -61,7 +62,7 @@ const Page: React.FC = () => {
                     inputRef={newTodoInputRef}
                     sx={{ width: '40%' }}
                 />
-                <Button variant="contained" onClick={handleAddTodo}>Add Todo</Button>
+                <Button variant="contained" onClick={handleAdd}>Add Todo</Button>
             </Box>
             {state.todos.length === 0 && <Typography>No todos</Typography>}
             {state.todos.length > 0 && <List>
@@ -84,14 +85,14 @@ const Page: React.FC = () => {
                                     textOverflow: 'ellipsis',
                                     whiteSpace: 'nowrap',
                                 }} />
-                            <IconButton edge="end" aria-label="delete" onClick={() => dispatch(actions.showDeleteConfirmation(item.id))}>
+                            <IconButton edge="end" aria-label="delete" onClick={() => dispatch(todoActions.showDeleteConfirmation(item.id))}>
                                 <DeleteIcon />
                             </IconButton>
-                            <Dialog id={`deleteConfirmationDialog${item.id}`} open={state.deleteConfirmationTarget === item.id} onClose={() => dispatch(actions.hideDeleteConfirmation())}>
+                            <Dialog id={`deleteConfirmationDialog${item.id}`} open={state.deleteConfirmationTarget === item.id} onClose={() => dispatch(todoActions.hideDeleteConfirmation())}>
                                 <DialogTitle>Are you sure you want to delete {item.title}?</DialogTitle>
                                 <DialogActions>
                                     <Button onClick={() => handleDeleteTodo(item.id)}>Yes</Button>
-                                    <Button onClick={() => dispatch(actions.hideDeleteConfirmation())}>No</Button>
+                                    <Button onClick={() => dispatch(todoActions.hideDeleteConfirmation())}>No</Button>
                                 </DialogActions>
                             </Dialog>
                         </Box>
