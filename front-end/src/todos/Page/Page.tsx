@@ -3,16 +3,8 @@ import { Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogTitle,
 import { Box, Container } from "@mui/system";
 import DeleteIcon from '@mui/icons-material/Delete';
 import apiClient from "src/apiClient";
-import { State } from 'src/store/state';
+import { State, initialState } from 'src/store/state';
 import { Action, setItems, setNewTodoTitle, addItem, updateItem, removeItem, hideDeleteConfirmation, showDeleteConfirmation } from '../actions';
-
-
-const initialState: State = {
-    newTodoTitle: '',
-    activeRequests: 0,
-    todos: [],
-    deleteConfirmationTarget: null,
-};
 
 function reducer(state: State, action: Action): State {
     switch (action.type) {
