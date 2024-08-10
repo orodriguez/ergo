@@ -74,7 +74,8 @@ const Page: React.FC = () => {
                 />
                 <Button variant="contained" onClick={handleAddTodo}>Add Todo</Button>
             </Box>
-            <List>
+            {items.length === 0 && <Typography>No todos</Typography>}
+            {items.length > 0 && <List>
                 {items.map((item) => (
                     <ListItem key={item.id}>
                         <Box display="flex" alignItems="center" gap={2}>
@@ -107,7 +108,7 @@ const Page: React.FC = () => {
                         </Box>
                     </ListItem>
                 ))}
-            </List>
+            </List>}
         </Container>
     );
 };

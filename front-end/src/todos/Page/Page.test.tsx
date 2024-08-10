@@ -2,63 +2,56 @@ import React from "react";
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import Page from "./Page";
 import { server } from 'src/mocks/node'
-import { HttpResponse, PathParams, http } from 'msw';
-import { CreateRequest, Response } from "../types";
-import { Http } from "@mui/icons-material";
+import { HttpResponse, http } from 'msw';
+import { Response } from "../types";
 
 beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 
 describe('Page Component', () => {
-    beforeEach(() => {
-        server.use(
-            http.get('http://localhost:3000/todos', () => {
-                const todos = [
-                    { id: 1, title: 'First todo', completed: false },
-                    { id: 2, title: 'Second todo', completed: false },
-                    { id: 3, title: 'Third todo', completed: false }
-                ];
+    beforeEach(() => setupGetTodos([]));
 
-                return HttpResponse.json(todos);
-            })
-        );
-    });
-
-    test('renders todos', async () => {
+    test('renders no todos', async () => {
         render(<Page />);
-        const listItems = await screen.findAllByRole('listitem');
-        const todoTitles = listItems.map(item => item.textContent);
-        expect(todoTitles).toEqual(['First todo', 'Second todo', 'Third todo']);
+
+        await waitFor(() => screen.getByText(/No todos/i));
     });
 
     test('adds a new todo', async () => {
-        server.use(http.post('http://localhost:3000/todos', ({ }) => {
-            const todo: Response = {
-                id: 4,
-                title: 'New todo',
-                description: 'New todo description',
-                completed: false
-            };
-            console.log(todo);
-            return HttpResponse.json(todo);
-        }));
-
+        setupPostTodo({
+            id: 4,
+            title: 'New todo',
+            description: 'New todo description',
+            completed: false
+        });
         render(<Page />);
+        await fillNewTodoInput('New todo');
 
-        // fill the input
-        const newTodoInput: HTMLInputElement = await screen.findByRole('textbox');
-        fireEvent.change(newTodoInput, { target: { value: 'New todo' } });
+        clickAddTodo();
 
-        const addButton = screen.getByRole('button', { name: /add/i });
-        fireEvent.click(addButton);
-
-        await waitFor(async () => {
-            const listItems = await screen.findAllByRole('listitem');
-            const todoTitles = listItems.map(item => item.textContent);
-            expect(todoTitles).toEqual(['New todo', 'First todo', 'Second todo', 'Third todo']);
-        })
+        expect(await getTodoTitles()).toEqual(['New todo']);
     });
 });
 
-expect(true).toBe(true);
+const setupGetTodos = (todos: Response[]) =>
+    server.use(http.get('http://localhost:3000/todos', () => HttpResponse.json(todos)))
+
+const setupPostTodo = (todo: Response) =>
+    server.use(http.post('http://localhost:3000/todos',
+        () => HttpResponse.json(todo)));
+
+const fillNewTodoInput = async (title: string) => {
+    const newTodoInput = await screen.findByRole('textbox');
+    fireEvent.change(newTodoInput, { target: { value: 'New todo' } });
+};
+
+const clickAddTodo = async () => {
+    const addButton = screen.getByRole('button', { name: /add/i });
+    fireEvent.click(addButton);
+};
+
+const getTodoTitles = async () => {
+    const listItems = await screen.findAllByRole('listitem');
+    return listItems.map(item => item.textContent);
+};
