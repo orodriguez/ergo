@@ -2,7 +2,7 @@ import React, { useReducer, useEffect, useRef } from 'react';
 import { Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogTitle, IconButton, List, ListItem, ListItemText, TextField, Typography } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import DeleteIcon from '@mui/icons-material/Delete';
-import apiClient from "src/apiClient";
+import createApiClient from "src/apiClient";
 import { initialState } from 'src/store/state';
 import * as todoActions from '../actions';
 import { reducer } from 'src/store/reducer';
@@ -10,7 +10,7 @@ import { reducer } from 'src/store/reducer';
 const Page: React.FC = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const newTodoInputRef = useRef<HTMLInputElement>(null);
-    const api = apiClient();
+    const api = createApiClient();
 
     useEffect(() => {
         newTodoInputRef.current?.focus();
