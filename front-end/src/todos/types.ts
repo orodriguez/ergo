@@ -1,12 +1,12 @@
-export interface CreateRequest {
+export interface CreateTodoRequest {
     title: string;
 }
 
-export interface UpdateRequest {
+export interface UpdateTodoRequest {
     completed: boolean;
 }
 
-export interface Response {
+export interface Todo {
     id: number;
     title: string;
     description: string;

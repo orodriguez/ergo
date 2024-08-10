@@ -1,9 +1,9 @@
 import React, { act } from "react";
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import Page from "./Page";
 import { server } from 'src/mocks/node'
 import { HttpResponse, http } from 'msw';
-import { Response } from "../types";
+import { Todo } from "../types";
 
 beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
@@ -35,10 +35,10 @@ describe('Page Component', () => {
     });
 });
 
-const setupGetTodos = (todos: Response[]) =>
+const setupGetTodos = (todos: Todo[]) =>
     server.use(http.get('http://localhost:3000/todos', () => HttpResponse.json(todos)))
 
-const setupPostTodo = (todo: Response) =>
+const setupPostTodo = (todo: Todo) =>
     server.use(http.post('http://localhost:3000/todos',
         () => HttpResponse.json(todo)));
 

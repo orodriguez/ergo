@@ -3,18 +3,9 @@ import { Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogTitle,
 import { Box, Container } from "@mui/system";
 import DeleteIcon from '@mui/icons-material/Delete';
 import apiClient from "src/apiClient";
-import { Response } from "../types";
 import { State } from 'src/store/state';
+import { Action, setItems, setNewTodoTitle, addItem, updateItem, removeItem, hideDeleteConfirmation, showDeleteConfirmation } from '../actions';
 
-type Action =
-    | { type: 'SET_NEW_TODO_TITLE'; payload: string }
-    | { type: 'SET_ACTIVE_REQUESTS'; payload: number }
-    | { type: 'SET_ITEMS'; payload: Response[] }
-    | { type: 'ADD_ITEM'; payload: Response }
-    | { type: 'UPDATE_ITEM'; payload: { id: number, completed: boolean } }
-    | { type: 'REMOVE_ITEM'; payload: number }
-    | { type: 'SHOW_DELETE_CONFIRMATION'; payload: number }
-    | { type: 'HIDE_DELETE_CONFIRMATION' };
 
 const initialState: State = {
     newTodoTitle: '',
@@ -50,16 +41,6 @@ function reducer(state: State, action: Action): State {
             return state;
     }
 }
-
-// Action Creators
-const setNewTodoTitle = (title: string) => ({ type: 'SET_NEW_TODO_TITLE', payload: title } as const);
-const setActiveRequests = (count: number) => ({ type: 'SET_ACTIVE_REQUESTS', payload: count } as const);
-const setItems = (items: Response[]) => ({ type: 'SET_ITEMS', payload: items } as const);
-const addItem = (item: Response) => ({ type: 'ADD_ITEM', payload: item } as const);
-const updateItem = (id: number, completed: boolean) => ({ type: 'UPDATE_ITEM', payload: { id, completed } } as const);
-const removeItem = (id: number) => ({ type: 'REMOVE_ITEM', payload: id } as const);
-const showDeleteConfirmation = (id: number) => ({ type: 'SHOW_DELETE_CONFIRMATION', payload: id } as const);
-const hideDeleteConfirmation = () => ({ type: 'HIDE_DELETE_CONFIRMATION' } as const);
 
 const Page: React.FC = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
