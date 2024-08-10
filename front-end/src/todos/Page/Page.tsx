@@ -3,36 +3,9 @@ import { Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogTitle,
 import { Box, Container } from "@mui/system";
 import DeleteIcon from '@mui/icons-material/Delete';
 import apiClient from "src/apiClient";
-import { State, initialState } from 'src/store/state';
-import { Action, setItems, setNewTodoTitle, addItem, updateItem, removeItem, hideDeleteConfirmation, showDeleteConfirmation } from '../actions';
-
-function reducer(state: State, action: Action): State {
-    switch (action.type) {
-        case 'SET_NEW_TODO_TITLE':
-            return { ...state, newTodoTitle: action.payload };
-        case 'SET_ACTIVE_REQUESTS':
-            return { ...state, activeRequests: action.payload };
-        case 'SET_ITEMS':
-            return { ...state, todos: action.payload };
-        case 'ADD_TODO':
-            return { ...state, todos: [action.payload, ...state.todos], newTodoTitle: '' };
-        case 'UPDATE_ITEM':
-            return {
-                ...state,
-                todos: state.todos.map(item =>
-                    item.id === action.payload.id ? { ...item, completed: action.payload.completed } : item
-                ),
-            };
-        case 'REMOVE_ITEM':
-            return { ...state, todos: state.todos.filter(item => item.id !== action.payload) };
-        case 'SHOW_DELETE_CONFIRMATION':
-            return { ...state, deleteConfirmationTarget: action.payload };
-        case 'HIDE_DELETE_CONFIRMATION':
-            return { ...state, deleteConfirmationTarget: null };
-        default:
-            return state;
-    }
-}
+import { initialState } from 'src/store/state';
+import { setItems, setNewTodoTitle, addItem, updateItem, removeItem, hideDeleteConfirmation, showDeleteConfirmation } from '../actions';
+import { reducer } from 'src/store/reducer';
 
 const Page: React.FC = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
