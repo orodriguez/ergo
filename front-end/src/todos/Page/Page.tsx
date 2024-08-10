@@ -10,7 +10,7 @@ import { Action, setItems, setNewTodoTitle, addItem, updateItem, removeItem, hid
 const initialState: State = {
     newTodoTitle: '',
     activeRequests: 0,
-    items: [],
+    todos: [],
     deleteConfirmationTarget: null,
 };
 
@@ -21,18 +21,18 @@ function reducer(state: State, action: Action): State {
         case 'SET_ACTIVE_REQUESTS':
             return { ...state, activeRequests: action.payload };
         case 'SET_ITEMS':
-            return { ...state, items: action.payload };
-        case 'ADD_ITEM':
-            return { ...state, items: [action.payload, ...state.items], newTodoTitle: '' };
+            return { ...state, todos: action.payload };
+        case 'ADD_TODO':
+            return { ...state, todos: [action.payload, ...state.todos], newTodoTitle: '' };
         case 'UPDATE_ITEM':
             return {
                 ...state,
-                items: state.items.map(item =>
+                todos: state.todos.map(item =>
                     item.id === action.payload.id ? { ...item, completed: action.payload.completed } : item
                 ),
             };
         case 'REMOVE_ITEM':
-            return { ...state, items: state.items.filter(item => item.id !== action.payload) };
+            return { ...state, todos: state.todos.filter(item => item.id !== action.payload) };
         case 'SHOW_DELETE_CONFIRMATION':
             return { ...state, deleteConfirmationTarget: action.payload };
         case 'HIDE_DELETE_CONFIRMATION':
@@ -98,9 +98,9 @@ const Page: React.FC = () => {
                 />
                 <Button variant="contained" onClick={handleAddTodo}>Add Todo</Button>
             </Box>
-            {state.items.length === 0 && <Typography>No todos</Typography>}
-            {state.items.length > 0 && <List>
-                {state.items.map((item) => (
+            {state.todos.length === 0 && <Typography>No todos</Typography>}
+            {state.todos.length > 0 && <List>
+                {state.todos.map((item) => (
                     <ListItem key={item.id}>
                         <Box display="flex" alignItems="center" gap={2}>
                             <Checkbox
