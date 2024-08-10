@@ -2,7 +2,6 @@ import { Todo } from './types';
 
 // Action Type Constants
 export const NEW_TODO_TITLE_CHANGE = 'NEW_TODO_TITLE_CHANGE';
-export const SET_ACTIVE_REQUESTS = 'SET_ACTIVE_REQUESTS';
 export const SET_ITEMS = 'SET_ITEMS';
 export const ADD_TODO = 'ADD_TODO';
 export const UPDATE_ITEM = 'UPDATE_ITEM';
@@ -12,7 +11,6 @@ export const HIDE_DELETE_CONFIRMATION = 'HIDE_DELETE_CONFIRMATION';
 
 export type Action =
     | { type: typeof NEW_TODO_TITLE_CHANGE; payload: string }
-    | { type: typeof SET_ACTIVE_REQUESTS; payload: number }
     | { type: typeof SET_ITEMS; payload: Todo[] }
     | { type: typeof ADD_TODO; payload: Todo }
     | { type: typeof UPDATE_ITEM; payload: { id: number; completed: boolean } }
@@ -22,7 +20,6 @@ export type Action =
 
 // Action Creators
 export const changeTitle = (title: string): Action => ({ type: NEW_TODO_TITLE_CHANGE, payload: title });
-export const setActiveRequests = (count: number): Action => ({ type: SET_ACTIVE_REQUESTS, payload: count });
 export const fetchAll = (items: Todo[]): Action => ({ type: SET_ITEMS, payload: items });
 export const add = (item: Todo): Action => ({ type: ADD_TODO, payload: item });
 export const update = (id: number, completed: boolean): Action => ({ type: UPDATE_ITEM, payload: { id, completed } });
