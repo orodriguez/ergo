@@ -1,13 +1,15 @@
 import React from 'react';
-import { CssBaseline, ThemeProvider } from '@mui/material';
-import Todos from './todos';
+import { Container, CssBaseline, ThemeProvider } from '@mui/material';
 import theme from './theme';
+import Status from './components/Status';
 
 const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Todos.Page />
+      <Container>
+        <Status />
+      </Container>
     </ThemeProvider>
   );
 };
