@@ -10,10 +10,10 @@ export const Container: React.FC = (() => {
             .then(response => setMessages(response.data));
     }, []);
 
-    return <View value={messages} />
+    return <MessagesPage value={messages} />
 });
 
-export const View = ({ value }: { value: string[] }) =>
+export const MessagesPage = ({ value }: { value: string[] }) =>
     <>
         <h1>Messages</h1>
         {value.length === 0 && <span>...Loading</span>}
