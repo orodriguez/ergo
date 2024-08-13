@@ -10,8 +10,12 @@ export type Message = {
 export const Container: React.FC = (() => {
     const [messages, setMessages] = useState<Message[]>([]);
 
+    const client = axios.create({
+        baseURL: 'http://localhost:5047'
+    });
+
     useEffect(() => {
-        axios.get("http://localhost:5047/messages")
+        client.get('/messages')
             .then(response => setMessages(response.data));
     }, []);
 
