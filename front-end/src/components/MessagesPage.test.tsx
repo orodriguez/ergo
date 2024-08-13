@@ -4,6 +4,7 @@ import { setupServer } from 'msw/node'
 import { render, fireEvent, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import MessagesPage from './MessagesPage'
+import { MemoryRouter } from 'react-router-dom';
 
 const server = setupServer(
     http.get('http://localhost:5047/messages', () => {
@@ -18,8 +19,14 @@ beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 
+const renderMessagesPage = () => render(
+    <MemoryRouter initialEntries={['/messages']}>
+        <MessagesPage />
+    </MemoryRouter>
+);
+
 test('loads and displays greeting', async () => {
-    render(<MessagesPage />)
+    renderMessagesPage();
 
     screen.getByRole('heading', { name: 'Messages' });
 
