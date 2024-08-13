@@ -1,3 +1,7 @@
+using BackEnd.WebApi.Entities;
+using BackEnd.WebApi.Storage;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -14,6 +18,10 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Register DbContext with connection string
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ErgoDbContext>(options => options.UseNpgsql(connectionString));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,14 +34,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/messages", () =>
-    {
-        return new[]
-        {
-            "Hello",
-            "World"
-        };
-    })
+app.MapPost("/messages", (ErgoDbContext db, Message message) =>
+{
+    db.Messages.Add(message);
+    db.SaveChanges();
+
+    return Results.Created();
+});
+
+app.MapGet("/messages", (ErgoDbContext db) => Results.Ok(db.Messages))
     .WithName("GetWeatherForecast")
     .WithOpenApi();
 
