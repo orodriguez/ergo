@@ -34,16 +34,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/messages", (ErgoDbContext db, Message message) =>
-{
-    db.Messages.Add(message);
-    db.SaveChanges();
-
-    return Results.Created();
-});
-
-app.MapGet("/messages", (ErgoDbContext db) => Results.Ok(db.Messages))
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
+app.MapGet("/api/jobs", (ErgoDbContext db) => Results.Ok(db.Jobs));
 
 app.Run();
