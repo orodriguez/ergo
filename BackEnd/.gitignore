@@ -1,0 +1,52 @@
+# Ignore build output directories
+bin/
+obj/
+
+# Ignore Rider IDE files
+.idea/
+*.sln.iml
+
+# Ignore SonarQube files
+.sonar/
+.sonarqube/
+
+# Ignore user-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Ignore ASP.NET Core Secret Manager files
+secrets.json
+
+# Ignore compiled DLLs and PDBs
+*.dll
+*.pdb
+
+# Ignore logs
+*.log
+logs/
+
+# Ignore NuGet Packages
+*.nupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Ignore publish output
+.publish/
+
+# Ignore VS Code specific files
+.vscode/
+
+# Ignore Rider plugin logs
+.idea/*/.Rider*
+
+# Ignore dotnet user specific files
+.dotnet/
+dotnet-sdk/
+dotnet-tools/
+
+# Ignore local configurations
+appsettings.Local.json
