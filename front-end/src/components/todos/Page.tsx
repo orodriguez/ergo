@@ -13,9 +13,8 @@ const Container: React.FC = () => {
     const handleNewTodoKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key !== 'Enter') return;
 
-        axios.post('http://localhost:3000/todos', {
-            title: newTodo
-        }).then((response) => dispatch(addTodo(response.data)));
+        axios.post('http://localhost:3000/todos', { title: newTodo })
+            .then((response) => dispatch(addTodo(response.data)));
     };
 
     return <Page
