@@ -18,10 +18,14 @@ const initialState: State = {
     newTodo: ''
 };
 
-// action type using discriminated uniton for different action types
+
+type AddTodoAction = { type: 'addTodo', payload: Todo };
+
 type Action =
-    | { type: 'addTodo', payload: Todo }
+    | AddTodoAction
     | { type: 'changeNewTodo', payload: string };
+
+const addTodo = (payload: Todo): AddTodoAction => ({ type: 'addTodo', payload });
 
 const reducer = (state: State, action: Action): State => {
     switch (action.type) {
@@ -50,9 +54,7 @@ const Container: React.FC = () => {
 
         axios.post('http://localhost:3000/todos', {
             title: newTodo
-        }).then((response) => {
-            dispatch({ type: 'addTodo', payload: response.data });
-        });
+        }).then((response) => dispatch(addTodo(response.data)));
     };
 
     return <Page
