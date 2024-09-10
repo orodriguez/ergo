@@ -34,6 +34,22 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/api/jobs", (ErgoDbContext db) => Results.Ok(db.Jobs));
+app.MapPost("/api/jobs", (ErgoDbContext db, Job job) =>
+{
+    db.Jobs.Add(job);
+    db.SaveChanges();
+
+    return Results.Created();
+});
+
+app.MapGet("/api/jobs", (ErgoDbContext db) => Results.Ok(db.Jobs)).WithOpenApi();
+
+app.MapGet("/api/jobs/{id}", (ErgoDbContext db, int id) =>
+{
+    var job = db.Jobs.First(job => job.Id == id);
+    return Results.Ok(job);
+}).WithOpenApi();
+
+app.MapGet("/api/jobs", (ErgoDbContext db) => Results.Ok(db.Jobs)).WithOpenApi();
 
 app.Run();

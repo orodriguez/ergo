@@ -1,43 +1,53 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-
-type Job = {
-    id: number;
-    name: string;
-};
+import { Link } from "react-router-dom";
+import { Job } from "./types";
 
 const Container: React.FC = () => {
     const [jobs, setJobs] = useState<Job[]>([]);
 
     const client = axios.create({
-        baseURL: 'http://localhost:2345'
+        baseURL: 'http://localhost:5047/api'
     });
 
     useEffect(() => {
-        client.get('/api/jobs').then(response => setJobs(response.data));
+        client.get('/jobs').then(response => {
+            console.log('response', response)
+            setJobs(response.data as Job[]);
+        });
     }, []);
 
-    return <JobsPage />
+    return <JobsPage jobs={jobs} />
 };
 
-const JobsPage: React.FC = () => {
+interface IProps {
+    jobs: Job[];
+}
+
+const JobsPage: React.FC<IProps> = ({ jobs }: IProps) => {
     return <>
         <h1>Jobs</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>text1.1</td>
-                    <td>text1.2</td>
-                </tr>
-            </tbody>
-        </table>
+
+        {jobs.length === 0 && <h2>Loading</h2>}
+        {jobs.length > 0 && <JobsTable jobs={jobs} />}
     </>;
 };
+
+const JobsTable: React.FC<IProps> = ({ jobs }: IProps) => {
+    return <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {jobs.map(job => <tr key={job.id}>
+                <td>{job.title}</td>
+                <td><Link to={`/jobs/${job.id}`} >View</Link></td>
+            </tr>)}
+        </tbody>
+    </table>;
+}
 
 export default Container;
