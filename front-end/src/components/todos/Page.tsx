@@ -1,6 +1,7 @@
 import { Container as MUIContainer, TextField, } from "@mui/material";
 import axios from "axios";
 import { useReducer } from "react";
+import { Action } from '../../todos/actions';
 
 type Todo = {
     id: number;
@@ -18,18 +19,22 @@ const initialState: State = {
     newTodo: ''
 };
 
+enum ActionType {
+    AddTodo = 'addTodo',
+    ChangeNewTodo = 'changeNewTodo'
+};
 
-type AddTodoAction = { type: 'addTodo', payload: Todo };
+type AddTodoAction = { type: ActionType.AddTodo, payload: Todo };
 
-type ChangeNewTodoAction = { type: 'changeNewTodo', payload: string };
+type ChangeNewTodoAction = { type: ActionType.ChangeNewTodo, payload: string };
 
 type Action =
     | AddTodoAction
     | ChangeNewTodoAction;
 
-const addTodo = (payload: Todo): AddTodoAction => ({ type: 'addTodo', payload });
+const addTodo = (payload: Todo): AddTodoAction => ({ type: ActionType.AddTodo, payload });
 
-const changeNewTodo = (payload: string): ChangeNewTodoAction => ({ type: 'changeNewTodo', payload });
+const changeNewTodo = (payload: string): ChangeNewTodoAction => ({ type: ActionType.ChangeNewTodo, payload });
 
 const reducer = (state: State, action: Action): State => {
     switch (action.type) {
