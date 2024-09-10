@@ -21,11 +21,15 @@ const initialState: State = {
 
 type AddTodoAction = { type: 'addTodo', payload: Todo };
 
+type ChangeNewTodoAction = { type: 'changeNewTodo', payload: string };
+
 type Action =
     | AddTodoAction
-    | { type: 'changeNewTodo', payload: string };
+    | ChangeNewTodoAction;
 
 const addTodo = (payload: Todo): AddTodoAction => ({ type: 'addTodo', payload });
+
+const changeNewTodo = (payload: string): ChangeNewTodoAction => ({ type: 'changeNewTodo', payload });
 
 const reducer = (state: State, action: Action): State => {
     switch (action.type) {
@@ -47,7 +51,7 @@ const Container: React.FC = () => {
     const { newTodo } = state;
 
     const handleNewTodoChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-        dispatch({ type: 'changeNewTodo', payload: e.target.value });
+        dispatch(changeNewTodo(e.target.value));
 
     const handleNewTodoKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key !== 'Enter') return;
