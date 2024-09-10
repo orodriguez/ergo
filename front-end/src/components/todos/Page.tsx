@@ -11,8 +11,7 @@ const Container: React.FC = () => {
         if (e.key !== 'Enter') return;
 
         axios.post('http://localhost:3000/todos', {
-            title: newTodo,
-            completed: false
+            title: newTodo
         }).then((response) => {
             console.log(response.data);
         });
