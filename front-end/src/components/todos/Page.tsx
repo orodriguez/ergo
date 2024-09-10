@@ -1,11 +1,49 @@
 import { Container as MUIContainer, TextField, } from "@mui/material";
 import axios from "axios";
-import { useState } from "react";
+import { useReducer } from "react";
+
+type Todo = {
+    id: number;
+    title: string;
+    completed: boolean;
+};
+
+type State = {
+    todos: Todo[];
+    newTodo: string;
+};
+
+const initialState: State = {
+    todos: [],
+    newTodo: ''
+};
+
+// action type using discriminated uniton for different action types
+type Action =
+    | { type: 'addTodo', payload: Todo }
+    | { type: 'changeNewTodo', payload: string };
+
+const reducer = (state: State, action: Action): State => {
+    switch (action.type) {
+        case 'addTodo':
+            return {
+                ...state,
+                newTodo: '',
+                todos: [action.payload, ...state.todos]
+            };
+        case 'changeNewTodo':
+            return { ...state, newTodo: action.payload };
+        default:
+            return state;
+    }
+};
 
 const Container: React.FC = () => {
-    const [newTodo, setNewTodo] = useState<string>('');
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const { newTodo } = state;
 
-    const handleNewTodoChange = (e: React.ChangeEvent<HTMLInputElement>) => setNewTodo(e.target.value);
+    const handleNewTodoChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+        dispatch({ type: 'changeNewTodo', payload: e.target.value });
 
     const handleNewTodoKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key !== 'Enter') return;
@@ -13,10 +51,8 @@ const Container: React.FC = () => {
         axios.post('http://localhost:3000/todos', {
             title: newTodo
         }).then((response) => {
-            console.log(response.data);
+            dispatch({ type: 'addTodo', payload: response.data });
         });
-
-        setNewTodo('');
     };
 
     return <Page
