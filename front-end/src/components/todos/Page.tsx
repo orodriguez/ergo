@@ -1,55 +1,7 @@
 import { Container as MUIContainer, TextField, } from "@mui/material";
 import axios from "axios";
+import { initialState, reducer, addTodo, changeNewTodo } from "./state";
 import { useReducer } from "react";
-import { Action } from '../../todos/actions';
-
-type Todo = {
-    id: number;
-    title: string;
-    completed: boolean;
-};
-
-type State = {
-    todos: Todo[];
-    newTodo: string;
-};
-
-const initialState: State = {
-    todos: [],
-    newTodo: ''
-};
-
-enum ActionType {
-    AddTodo = 'addTodo',
-    ChangeNewTodo = 'changeNewTodo'
-};
-
-type AddTodoAction = { type: ActionType.AddTodo, payload: Todo };
-
-type ChangeNewTodoAction = { type: ActionType.ChangeNewTodo, payload: string };
-
-type Action =
-    | AddTodoAction
-    | ChangeNewTodoAction;
-
-const addTodo = (payload: Todo): AddTodoAction => ({ type: ActionType.AddTodo, payload });
-
-const changeNewTodo = (payload: string): ChangeNewTodoAction => ({ type: ActionType.ChangeNewTodo, payload });
-
-const reducer = (state: State, action: Action): State => {
-    switch (action.type) {
-        case 'addTodo':
-            return {
-                ...state,
-                newTodo: '',
-                todos: [action.payload, ...state.todos]
-            };
-        case 'changeNewTodo':
-            return { ...state, newTodo: action.payload };
-        default:
-            return state;
-    }
-};
 
 const Container: React.FC = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
