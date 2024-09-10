@@ -1,8 +1,8 @@
-import { Container, TextField, } from "@mui/material";
+import { Container as MUIContainer, TextField, } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 
-const PageContainer: React.FC = () => {
+const Container: React.FC = () => {
     const [newTodo, setNewTodo] = useState<string>('');
 
     const handleNewTodoChange = (e: React.ChangeEvent<HTMLInputElement>) => setNewTodo(e.target.value);
@@ -37,13 +37,13 @@ const Page: React.FC<IProps> = ({
     onNewTodoChange,
     onNewTodoKeyDown
 }: IProps) =>
-    <Container sx={{ paddingTop: 3 }}>
+    <MUIContainer sx={{ paddingTop: 3 }}>
         <TextField
             label="Add Todo"
             variant="outlined"
             value={newTodo}
             onChange={onNewTodoChange}
             onKeyDown={onNewTodoKeyDown} />
-    </Container>;
+    </MUIContainer>;
 
-export default PageContainer;
+export default Container;
