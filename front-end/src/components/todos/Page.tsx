@@ -1,11 +1,16 @@
 import { Container as MUIContainer, Paper, Stack, TextField, } from "@mui/material";
 import axios from "axios";
-import { initialState, reducer, addTodo, changeNewTodo, Todo } from "./state";
-import { useReducer } from "react";
+import { initialState, reducer, addTodos, addTodo, changeNewTodo, Todo } from "./state";
+import { useEffect, useReducer } from "react";
 
 const Container: React.FC = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const { newTodo, todos } = state;
+
+    useEffect(() => {
+        axios.get('http://localhost:3000/todos')
+            .then((response) => dispatch(addTodos(response.data)));
+    }, []);
 
     const handleNewTodoChange = (e: React.ChangeEvent<HTMLInputElement>) =>
         dispatch(changeNewTodo(e.target.value));
