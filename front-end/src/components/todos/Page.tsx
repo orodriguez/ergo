@@ -1,12 +1,11 @@
 import { Container as MUIContainer, Paper, Stack, TextField, } from "@mui/material";
-import axios from "axios";
+import apiClient from "src/apiClient";
 import { initialState, reducer, addTodos, addTodo, changeNewTodo, Todo } from "./state";
 import { useEffect, useReducer } from "react";
 
 const Container: React.FC = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const { newTodo, todos } = state;
-    const apiClient = axios.create({ baseURL: 'http://localhost:3000' });
 
     useEffect(() => { fetchTodos(); }, []);
 
