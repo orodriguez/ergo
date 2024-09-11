@@ -53,10 +53,10 @@ const Page: React.FC<IProps> = ({
 
 const Todos: React.FC<{ value: Todo[] }> = ({ value }) =>
     <Stack spacing={2}>
-        {value.map(todo => <TodoView key={todo.id} value={todo} />)}
+        {value.map(todo => <TodoItem key={todo.id} value={todo} />)}
     </Stack>;
 
-const TodoView: React.FC<{ value: Todo }> = ({ value }) =>
+const TodoItem: React.FC<{ value: Todo }> = ({ value }) =>
     <Paper elevation={2} sx={{ padding: 2 }}>{value.title}</Paper>;
 
 export default Container;
