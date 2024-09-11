@@ -6,11 +6,14 @@ import { useEffect, useReducer } from "react";
 const Container: React.FC = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const { newTodo, todos } = state;
+    const apiClient = axios.create({ baseURL: 'http://localhost:3000' });
 
-    useEffect(() => {
-        axios.get('http://localhost:3000/todos')
+    useEffect(() => { fetchTodos(); }, []);
+
+    const fetchTodos = () => {
+        apiClient.get('/todos')
             .then((response) => dispatch(addTodos(response.data)));
-    }, []);
+    };
 
     const handleNewTodoChange = (e: React.ChangeEvent<HTMLInputElement>) =>
         dispatch(changeNewTodo(e.target.value));
@@ -18,7 +21,7 @@ const Container: React.FC = () => {
     const handleNewTodoKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key !== 'Enter') return;
 
-        axios.post('http://localhost:3000/todos', { title: newTodo })
+        apiClient.post('/todos', { title: newTodo })
             .then((response) => dispatch(addTodo(response.data)));
     };
 
