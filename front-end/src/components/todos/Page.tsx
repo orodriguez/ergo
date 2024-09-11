@@ -7,12 +7,12 @@ const Container: React.FC = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const { newTodo, todos } = state;
 
-    useEffect(() => { fetchTodos(); }, []);
-
     const fetchTodos = () => {
         apiClient.get('/todos')
             .then((response) => dispatch(addTodos(response.data)));
     };
+
+    useEffect(fetchTodos, [todos.length]);
 
     const handleNewTodoChange = (e: React.ChangeEvent<HTMLInputElement>) =>
         dispatch(changeNewTodo(e.target.value));
