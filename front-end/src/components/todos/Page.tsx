@@ -1,4 +1,4 @@
-import { Container as MUIContainer, Paper, Stack, TextField, } from "@mui/material";
+import { Checkbox, Container as MUIContainer, Paper, Stack, TextField, Typography, } from "@mui/material";
 import apiClient from "src/apiClient";
 import { initialState, reducer, addTodos, addTodo, changeNewTodo, Todo } from "./state";
 import { useEffect, useReducer } from "react";
@@ -64,6 +64,11 @@ const Todos: React.FC<{ value: Todo[] }> = ({ value }) =>
     </Stack>;
 
 const TodoItem: React.FC<{ value: Todo }> = ({ value }) =>
-    <Paper elevation={2} sx={{ padding: 2 }}>{value.title}</Paper>;
+    <Paper elevation={2} sx={{ padding: 2 }}>
+        <Stack direction="row" spacing={2} alignItems="center">
+            <Checkbox checked={value.completed} />
+            <Typography>{value.title}</Typography>
+        </Stack>
+    </Paper>;
 
 export default Container;
