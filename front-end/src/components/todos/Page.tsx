@@ -1,6 +1,6 @@
 import { Checkbox, Container as MUIContainer, Paper, Stack, TextField, Typography, } from "@mui/material";
 import apiClient from "src/apiClient";
-import { initialState, reducer, addTodos, addTodo, changeNewTodo, Todo } from "./state";
+import { initialState, reducer, addTodos, addTodo, changeNewTodo, toggleTodo, Todo } from "./state";
 import { useEffect, useReducer } from "react";
 
 const Container: React.FC = () => {
@@ -24,11 +24,20 @@ const Container: React.FC = () => {
             .then((response) => dispatch(addTodo(response.data)));
     };
 
+    const handleTodoChecked = (id: number) => {
+        const todo = todos.find(todo => todo.id === id);
+        if (!todo) return;
+
+        apiClient.patch(`/todos/${id}`, { completed: !todo.completed })
+            .then(() => dispatch(toggleTodo(id)));
+    };
+
     return <Page
         newTodo={newTodo}
         todos={todos}
         onNewTodoChange={handleNewTodoChange}
-        onNewTodoKeyDown={handleNewTodoKeyDown} />;
+        onNewTodoKeyDown={handleNewTodoKeyDown}
+        onTodoChecked={handleTodoChecked} />;
 };
 
 interface IProps {
@@ -36,13 +45,15 @@ interface IProps {
     todos: Todo[];
     onNewTodoChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onNewTodoKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+    onTodoChecked: (id: number) => void;
 }
 
 const Page: React.FC<IProps> = ({
     newTodo,
     todos,
     onNewTodoChange,
-    onNewTodoKeyDown
+    onNewTodoKeyDown,
+    onTodoChecked
 }: IProps) =>
     <MUIContainer sx={{ paddingTop: 2 }}>
         <Paper elevation={1} sx={{ padding: 2 }}>
@@ -53,21 +64,31 @@ const Page: React.FC<IProps> = ({
                     value={newTodo}
                     onChange={onNewTodoChange}
                     onKeyDown={onNewTodoKeyDown} />
-                <Todos value={todos} />
+                <Todos todos={todos} onTodoChecked={onTodoChecked} />
             </Stack>
         </Paper>
     </MUIContainer>;
 
-const Todos: React.FC<{ value: Todo[] }> = ({ value }) =>
+interface ITodosProps {
+    todos: Todo[];
+    onTodoChecked: (id: number) => void;
+}
+
+const Todos: React.FC<ITodosProps> = ({ todos: value, onTodoChecked }) =>
     <Stack spacing={2}>
-        {value.map(todo => <TodoItem key={todo.id} value={todo} />)}
+        {value.map(todo => <TodoItem key={todo.id} todo={todo} onTodoChecked={onTodoChecked} />)}
     </Stack>;
 
-const TodoItem: React.FC<{ value: Todo }> = ({ value }) =>
+interface ITodoItemProps {
+    todo: Todo;
+    onTodoChecked: (id: number) => void;
+}
+
+const TodoItem: React.FC<ITodoItemProps> = ({ todo, onTodoChecked }) =>
     <Paper elevation={2} sx={{ padding: 2 }}>
         <Stack direction="row" spacing={2} alignItems="center">
-            <Checkbox checked={value.completed} />
-            <Typography>{value.title}</Typography>
+            <Checkbox checked={todo.completed} onChange={e => onTodoChecked(todo.id)} />
+            <Typography>{todo.title}</Typography>
         </Stack>
     </Paper>;
 
